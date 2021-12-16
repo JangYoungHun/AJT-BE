@@ -1,9 +1,11 @@
 package com.ajt.service;
 
 import com.ajt.domain.Posts;
+import com.ajt.domain.User;
 import com.ajt.dto.posts.PostsRequestDto;
 import com.ajt.dto.posts.PostsResponseDto;
 import com.ajt.repository.PostsRepository;
+import com.ajt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class PostsService {
 
     private final PostsRepository repository;
+
+    private final UserRepository userRepository;
 
     // 인자로 받은 id의 게시글을 조회하여 응답 DTO로 반환하는 함수
     public PostsResponseDto findById(Long id){
@@ -34,10 +38,15 @@ public class PostsService {
     }
 
     // 게시글의 내용을 업데이트 하는 함수
-    public Long update(final Long id, final PostsRequestDto modified) throws Exception {
+    public Long update(final Long id, final PostsRequestDto modified, String username) throws Exception {
+
         Posts post = repository.findById(id).orElseThrow(()->new Exception("수정 findById중에 에러"));
-        post.update(modified.getTitle(), modified.getContent());
-        return id;
+        if(post.getAuthor().equals(username)){
+            post.update(modified.getTitle(), modified.getContent());
+            return id;
+        }else {
+            return 0L;
+        }
     }
 
     //생성 , dto에서 toEntity()이용해서 저장
@@ -47,10 +56,14 @@ public class PostsService {
     }
 
     //게시글을 삭제하는 함수
-    public Long delete(Long id) {
+    public Long delete(Long id ,String username ) {
         Posts post = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id : " +id));
-        repository.delete(post);
-        return id;
+        if(post.getAuthor().equals(username)){
+            repository.delete(post);
+            return id;
+        }else {
+            return 0L;
+        }
     }
 }

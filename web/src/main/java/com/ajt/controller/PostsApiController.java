@@ -44,14 +44,14 @@ public class PostsApiController {
 
     //게시글 수정
     @PutMapping("/posts/{id}")
-    public Long update(@PathVariable final Long id, @RequestBody final PostsRequestDto dto) throws Exception {
-        return postsService.update( id, dto);
+    public Long update(@PathVariable final Long id, @RequestBody final PostsRequestDto dto,@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+        return postsService.update( id, dto , principalDetails.getUsername().toString());
     }
 
     //게시글 삭제
     @DeleteMapping("posts/{id}")
-    public Long delete(@PathVariable("id") Long id){
-        return postsService.delete(id);
+    public Long delete(@PathVariable("id") Long id,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        return postsService.delete(id ,principalDetails.getUsername().toString());
     }
 
 }
