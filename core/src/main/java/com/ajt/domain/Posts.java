@@ -1,5 +1,6 @@
 package com.ajt.domain;
 
+import com.ajt.dto.comment.CommentResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,9 @@ public class Posts extends TimeEntity {
     //Like Table 과 일대다 양방향 관계
     @OneToMany(mappedBy = "post")
     private List<Likes> likeList = new ArrayList<Likes>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<Comment>();
 
     @Enumerated(EnumType.STRING)
     private Category category;

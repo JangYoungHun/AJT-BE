@@ -1,5 +1,6 @@
 package com.ajt.dto.comment;
 
+import com.ajt.domain.Comment;
 import com.ajt.domain.Posts;
 import com.ajt.domain.TimeEntity;
 import lombok.Getter;
@@ -16,4 +17,12 @@ public class CommentRequestDto extends TimeEntity {
     private String writer;
     // 포스트
     private Posts posts;
+
+    public Comment toEntity(){
+        return Comment.builder()
+                .contents(content)
+                .writer(writer)
+                .post(posts)
+                .build();
+    }
 }
