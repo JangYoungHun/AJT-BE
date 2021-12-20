@@ -26,34 +26,37 @@ public class CommentService {
     //댓글 생성
     public Long save (Long id,CommentRequestDto commentRequestDto){
         Comment comment =commentRepository.save(commentRequestDto.toEntity());
+        comment.setPost(postsRepository.findById(id).orElseThrow());
         return comment.getId();
     }
     //댓글 리스트 반환
     public List<CommentResponseDto> getList(Long id){
-        System.out.println("여기서 부터 댓글 리스트 반환 ");
         Posts posts = postsRepository.findById(id).orElseThrow();
-        posts.getCommentList().forEach((d) -> {
-            System.out.println(d +"포이치");
-        });
+//        posts.getCommentList().forEach((d) -> {
+//            System.out.println(d +"포이치");
+//        });
         List<Comment> commentList=posts.getCommentList();
-        System.out.println(commentList +" 두번째 리스트");
-//        postsList.stream().map(PostsResponseDto::new).collect(Collectors.toList())
         return commentList.stream().map(CommentResponseDto::new).collect(Collectors.toList());
     }
     //댓글 삭제
     public void deleteComment( Long id, Long commentID){
+        System.out.println("댓글삭제");
         Posts posts =postsRepository.findById(id).orElseThrow();
-
+        System.out.println(posts.getCommentList()+" 댓글삭제 " + commentID + " 이 아이디 넘버로 지울거임");
         commentRepository.deleteById(commentID);
     }
     //댓글 수정
-    public Comment commentUpdate(Long id , Long commentID , CommentRequestDto commentRequestDto){
+    public long commentUpdate(Long id , Long commentID , CommentRequestDto commentRequestDto){
+        System.out.println("수정 시작");
         Posts posts = postsRepository.findById(id).orElseThrow();
-        commentRequestDto.setPosts(posts);
 
-        Comment newComment = commentRepository.findById(commentID).orElseThrow();
-        newComment.setContents(commentRequestDto.getContent());
+        Comment newComment = commentRepository.findByCommentId(posts ,commentID);
 
-        return newComment;
+        if(newComment.getWriter().equals(commentRequestDto.getWriter())){
+            newComment.update(commentRequestDto.getContent());
+            return 1L;
+        }else{
+            return 0L;
+        }
     }
 }

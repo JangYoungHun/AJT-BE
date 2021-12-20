@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -35,11 +36,15 @@ public class Comment extends TimeEntity{
         this.post = post;
     }
 
-    public void setPost(Posts post){
-        if(!post.getCommentList().contains(this)){
-            System.out.println("setPost 메소드 시작");
-            post.getCommentList().add(this);
-            System.out.println("setPost 메소드 끝");
-        }
+//    public void setPost(Posts post){
+//        if(!post.getCommentList().contains(this)){
+//            System.out.println("setPost 메소드 시작");
+//            post.getCommentList().add(this);
+//            System.out.println("setPost 메소드 끝");
+//        }
+//    }
+
+    public void update(String contents) {
+        this.contents = contents;
     }
 }

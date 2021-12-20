@@ -15,14 +15,12 @@ public class CommentRequestDto extends TimeEntity {
     private String content;
     // 작성자
     private String writer;
-    // 포스트
-    private Posts posts;
+
 
     public Comment toEntity(){
         return Comment.builder()
                 .contents(content)
                 .writer(writer)
-                .post(posts)
                 .build();
     }
 }

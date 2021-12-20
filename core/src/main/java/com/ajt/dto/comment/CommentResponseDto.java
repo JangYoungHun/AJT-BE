@@ -16,21 +16,17 @@ public class CommentResponseDto extends TimeEntity {
     private String content;
     //댓글 작성자
     private String writer;
-    //포스트
-    private Posts posts;
 
     @Builder
-    public CommentResponseDto(Long id, String content, String writer, Posts posts) {
+    public CommentResponseDto(Long id, String content, String writer) {
         this.id = id;
         this.content = content;
         this.writer = writer;
-        this.posts = posts;
     }
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContents();
         this.writer = comment.getWriter();
-        this.posts = comment.getPost();
     }
 }

@@ -21,7 +21,6 @@ public class CommentsApiController {
     //댓글 생성
     @PutMapping("/user/posts/{id}/comment")
     public Long save(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        commentRequestDto.setPosts(postsRepository.findById(id).orElseThrow());
         commentRequestDto.setWriter(principalDetails.getUsername());
         return commentService.save(id,commentRequestDto);
     }
@@ -35,13 +34,12 @@ public class CommentsApiController {
     //댓글 삭제
     @DeleteMapping("/user/posts/{id}/comment/{commentID}")
     public void deleteComment(@PathVariable Long id, @PathVariable Long commentID){
-        deleteComment(id,commentID);
+        commentService.deleteComment(id,commentID);
     }
 
     //댓글 수정
     @PostMapping("/user/posts/{id}/comment/{commentID}")
-    public Comment commentUpdate(@PathVariable Long id , @PathVariable Long commentID , @RequestBody CommentRequestDto commentRequestDto){
-        return commentUpdate(id,commentID,commentRequestDto);
+    public Long commentUpdate(@PathVariable Long id , @PathVariable Long commentID , @RequestBody CommentRequestDto commentRequestDto){
+         return commentService.commentUpdate(id,commentID,commentRequestDto);
     }
-
 }
