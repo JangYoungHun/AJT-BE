@@ -50,6 +50,10 @@ public class Posts extends TimeEntity {
     @OneToMany(mappedBy = "post")
     private List<Likes> likeList = new ArrayList<Likes>();
 
+    //Hate Table 과 일대다 양방향 관계
+    @OneToMany(mappedBy = "post")
+    private List<Hates> hateList = new ArrayList<Hates>();
+
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<Comment>();
 

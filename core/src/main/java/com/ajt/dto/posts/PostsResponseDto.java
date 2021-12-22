@@ -32,6 +32,9 @@ public class PostsResponseDto extends TimeEntity {
     //좋아요 횟수
     private Long likes;
 
+    //싫어요 횟수
+    private Long hates;
+
     // DB에서 조회한 Posts 객체를 이용하여 응답용 DTO 생성 하는 생성자
     public PostsResponseDto(Posts post) {
         this.id = post.getId();
@@ -40,7 +43,6 @@ public class PostsResponseDto extends TimeEntity {
         this.content = post.getContent();
         this.hits=post.getHits();
         this.likes = (long)post.getLikeList().size();
-        //유저 이름 목록이 필요한 경우
-        //this.likeList = post.getLikeList().stream().map(like -> like.getUsername()).collect(Collectors.toList());
+        this.hates = (long)post.getHateList().size();
     }
 }
